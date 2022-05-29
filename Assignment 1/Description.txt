@@ -1,0 +1,35 @@
+# image.open to open image from desktop to the project
+and then image.size to get the width and height of the image
+
+image = Image.open(r"/Users/hadilekhalifa/Desktop/Suez Canal.png")
+width, height = image.size
+
+# cv2.imread to read image from desktop and get the edges of it and then zipping the indexes
+of the edges together to get the pixel location of each edge in the image
+i printed the indexes to pick the edges i will be calculating the distances on
+img = cv2.imread(r"/Users/hadilekhalifa/Desktop/Suez Canal.png", 0)
+edges = cv2.Canny(img, 240, 255)
+indices = np.where(edges != [0])
+coordinates = list(zip(indices[0], indices[1]))
+# from this I noticed the edge points of the ships and the banks
+print(coordinates)
+
+#i wrote down the edge pixels i am going to  use and then applied the cityblockmatrixtransform
+on them to get the distances and print them
+bigshipedges = [161, 194, 161, 214]
+smallshipedges = [301, 174, 301, 177]
+bankA = [161, 150, 161, 294]
+bankB = [301, 133, 301, 289]
+
+# setting one of the two points to zero to check the distance at the other point
+leftdistancebig = [[np.inf for x in range(width)] for y in range(height)]
+leftdistancebig[161][194] = 0
+rightdistancebig = [[np.inf for x in range(width)] for y in range(height)]
+rightdistancebig[161][214] = 0
+leftdistancesmall = [[np.inf for x in range(width)] for y in range(height)]
+leftdistancesmall[301][174] = 0
+rightdistancesmall = [[np.inf for x in range(width)] for y in range(height)]
+rightdistancesmall[301][177] = 0
+
+using this arrays and passing them to the citytransformmatrix function and
+getting back the distance at the specified pixels
